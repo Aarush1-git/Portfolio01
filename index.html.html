@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarush Samant - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #a855f7;
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Custom cursor */
+        .cursor {
+            position: fixed; /* Use fixed positioning for cursor */
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.2s ease-out, background 0.2s ease;
+            will-change: transform;
+        }
+
+        /* Background animation */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.1);
+            animation: float 6s ease-in-out infinite;
+            will-change: transform, opacity;
+        }
+
+        .particle:nth-child(odd) {
+            animation-delay: -3s;
+            animation-direction: reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+        }
+
+        /* Text animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(99, 102, 241, 0.6); }
+        }
+        
+        /* Animation trigger class */
+        .animate-on-scroll {
+            opacity: 0;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+        }
+        .fade-in-up.is-visible { transform: translateY(0); }
+        .slide-in-left.is-visible { transform: translateX(0); }
+        .slide-in-right.is-visible { transform: translateX(0); }
+
+        .fade-in-up { transform: translateY(30px); }
+        .slide-in-left { transform: translateX(-50px); }
+        .slide-in-right { transform: translateX(50px); }
+
+
+        /* Stagger animations */
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        .stagger-6 { transition-delay: 0.6s; }
+
+        /* Enhanced button styles */
+        .btn-primary {
+            position: relative;
+            padding: 12px 32px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            padding: 12px 32px;
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-secondary:hover::before {
+            width: 100%;
+        }
+
+        .btn-secondary:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-tertiary {
+            padding: 10px 25px;
+            border: 2px solid var(--text-secondary);
+            width : 125px;
+            border-radius: 50px;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-tertiary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-tertiary:hover::before {
+            width: 100%;
+        }
+
+        .btn-tertiary:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Card enhancements */
+        .card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+        
+        /* Section titles */
+        .section-title {
+            position: relative;
+            font-weight: 800;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: transparent;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background-clip: text;
+            -webkit-background-clip: text;
+            text-align: center;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -15px;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 2px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        /* ----- START: PROJECT CARD STYLES ----- */
+        .project-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            height: 300px; /* Give cards a fixed height */
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .project-image {
+            width: 100%;
+            height: 100%; /* Make image fill the card */
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+        .project-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(to top, var(--bg-secondary), rgba(26, 26, 46, 0.8));
+            transform: translateY(calc(100% - 68px)); /* Show title initially */
+            transition: transform 0.4s ease-out;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover .project-content {
+            transform: translateY(0);
+        }
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        .project-description {
+            opacity: 0;
+            transition: opacity 0.3s ease 0.2s;
+            flex-grow: 1;
+        }
+        .project-card:hover .project-description {
+            opacity: 1;
+        }
+        /* ----- END: PROJECT CARD STYLES ----- */
+        
+        /* Navigation enhancements */
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 1rem 0;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.4s ease-out;
+            will-change: transform, opacity;
+        }
+
+        .sticky-nav.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Profile picture enhancements */
+        .profile-picture {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse 3s infinite;
+        }
+
+        .profile-picture:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(99, 102, 241, 0.6);
+        }
+
+        /* Skills icons animation */
+        .skill-icon {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skill-icon:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+        }
+        .skill-icon:hover .skill-icon-name {
+            color: white;
+        }
+        .skill-icon:hover .skill-icon-svg {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Typing animation */
+        .typewriter-cursor {
+            border-right: 3px solid var(--primary);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { border-color: transparent; }
+            51%, 100% { border-color: var(--primary); }
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            z-index: 1001;
+            transition: width 0.1s ease;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            .profile-picture {
+                width: 150px;
+                height: 150px;
+            }
+            .sticky-nav .space-x-6 {
+                display: none; /* Mobile menu would be a good addition here */
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(99, 102, 241, 0.3);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="loading" class="loading">
+        <div class="loader"></div>
+    </div>
+
+    <div id="scroll-indicator" class="scroll-indicator"></div>
+
+    <div id="cursor" class="cursor"></div>
+
+    <div class="bg-gradient"></div>
+    <div class="particles"></div>
+
+    <nav id="sticky-nav" class="sticky-nav">
+        <div class="container mx-auto flex justify-between items-center px-8">
+            <a href="#home" class="text-xl font-bold text-white">Aarush Samant</a>
+            <div class="space-x-6">
+                <a href="#about" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">About <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span></a>
+                <a href="#projects" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">Projects <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span></a>
+                <a href="#skills" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">Skills <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span></a>
+                <a href="#contact" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">Contact <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span></a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="flex flex-col items-center justify-center min-h-screen p-8 text-center relative">
+        <div class="space-y-6 z-10">
+            <h1 class="text-6xl md:text-8xl font-bold tracking-tight text-white animate-on-scroll fade-in-up stagger-1">
+                Aarush Samant
+            </h1>
+            <p class="text-xl md:text-3xl font-light text-gray-300 animate-on-scroll fade-in-up stagger-2">
+                <span id="typewriter"></span><span class="typewriter-cursor"></span>
+            </p>
+            <p class="text-lg md:text-xl text-gray-400 max-w-2xl animate-on-scroll fade-in-up stagger-3">
+                Crafting digital experiences with passion and precision. Building the future, one line of code at a time.
+            </p>
+            <div class="flex flex-col gap-3 items-center justify-center animate-on-scroll fade-in-up stagger-4">
+            <a href ="https://www.linkedin.com/in/aarush-samant-61947a349/" target="_blank" class = "flex justify-center btn-tertiary">Linkedin</a>
+            <a href ="https://mail.google.com/mail/u/0/#inbox" target="_blank" class = "flex justify-center btn-tertiary">E-mail</a>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6 pt-6 animate-on-scroll fade-in-up stagger-4">
+                <a href="#projects" class="btn-primary">View My Work</a>
+                <a href="#contact" class="btn-secondary">Let's Connect</a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+            <div class="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-gray-400 rounded-full mt-2 animate-pulse"></div>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="py-24 p-8 md:p-16 relative">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-title animate-on-scroll fade-in-up">About Me</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="flex justify-center animate-on-scroll slide-in-left">
+                    <img src="C:\Users\Admin\Documents\Gemini_Generated_Image_xbg2spxbg2spxbg2.png" alt="A professional headshot of [Aarush Samant]" class="profile-picture">
+                </div>
+                <div class="space-y-6 animate-on-scroll slide-in-right">
+                    <p class="text-lg md:text-xl leading-relaxed text-gray-300">
+                        Hello! I'm <span class="text-indigo-400 font-semibold">[Aarush Samant]</span>, a passionate software developer with a knack for building beautiful and functional web applications. My journey into programming started with a simple curiosity, which quickly grew into a full-fledged passion for creating and solving complex problems.
+                    </p>
+                    <p class="text-lg md:text-xl leading-relaxed text-gray-300">
+                        I specialize in both front-end and back-end development, and I'm always eager to learn new technologies and improve my craft. When I'm not coding, you can find me exploring new design trends, contributing to open-source projects, or planning my next adventure.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 bg-indigo-600 bg-opacity-20 text-indigo-400 rounded-full text-sm font-medium">Problem Solver</span>
+                        <span class="px-4 py-2 bg-purple-600 bg-opacity-20 text-purple-400 rounded-full text-sm font-medium">Creative Thinker</span>
+                        <span class="px-4 py-2 bg-blue-600 bg-opacity-20 text-blue-400 rounded-full text-sm font-medium">Team Player</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-24 p-8 md:p-16">
+        <div class="container mx-auto max-w-7xl">
+            <h2 class="section-title animate-on-scroll fade-in-up">Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+
+                <div class="project-card animate-on-scroll fade-in-up stagger-1">
+                    <img src="C:\Users\Admin\Documents\Screenshot 2025-09-07 2 170358.png" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Sentiment Intensity Analyzer</h3>
+                        <p class="project-description text-gray-400">
+                            Analyer that shows public sentiments towards a product or service.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <span class="px-3 py-1 bg-blue-600 bg-opacity-20 text-blue-400 rounded-full text-sm">Python</span>
+                            <span class="px-3 py-1 bg-green-600 bg-opacity-20 text-green-400 rounded-full text-sm">Flask</span>
+                            <span class="px-3 py-1 bg-red-600 bg-opacity-20 text-red-400 rounded-full text-sm">API</span>
+                        </div>
+                        <div class="flex gap-4 pt-4 mt-auto">
+                            <a href="#" class="text-indigo-400 hover:text-indigo-300 font-medium">Live Demo</a>
+                            <a href="#" class="text-indigo-400 hover:text-indigo-300 font-medium">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card animate-on-scroll fade-in-up stagger-2">
+                    <img src="c:\Users\Admin\Documents\Screenshot 2025-09-07 174218.png"  class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Student hub</h3>
+                        <p class="project-description text-gray-400">
+                            A place for students to engage in peer to peer learing.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <span class="px-3 py-1 bg-green-600 bg-opacity-20 text-green-400 rounded-full text-sm">Html</span>
+                            <span class="px-3 py-1 bg-blue-600 bg-opacity-20 text-blue-400 rounded-full text-sm">CSS</span>
+                            <span class="px-3 py-1 bg-yellow-600 bg-opacity-20 text-yellow-400 rounded-full text-sm">Python</span>
+                            <span class="px-3 py-1 bg-purple-600 bg-opacity-20 text-purple-400 rounded-full text-sm">Flask</span>
+                            <span class="px-3 py-1 bg-red-600 bg-opacity-20 text-red-400 rounded-full text-sm">Firebase</span>
+                        </div>
+                        <div class="flex gap-4 pt-4 mt-auto">
+                            <a href="#" class="text-indigo-400 hover:text-indigo-300 font-medium">Live Demo</a>
+                            <a href="#" class="text-indigo-400 hover:text-indigo-300 font-medium">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card animate-on-scroll fade-in-up stagger-3">
+                    <img src="https://placehold.co/600x400/4f46e5/FFFFFF?text=Project+3" alt="Screenshot of AI Chat Interface" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Greenhub</h3>
+                        <p class="project-description text-gray-400">
+                            Helping people convert to renewable energies in a smooth manner.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <span class="px-3 py-1 bg-green-600 bg-opacity-20 text-green-400 rounded-full text-sm">Html</span>
+                            <span class="px-3 py-1 bg-blue-600 bg-opacity-20 text-blue-400 rounded-full text-sm">CSS</span>
+                            <span class="px-3 py-1 bg-violet-600 bg-opacity-20 text-violet-400 rounded-full text-sm">Javascript</span>
+                        </div>
+                        <div class="flex gap-4 pt-4 mt-auto">
+                            <a href="#" class="text-indigo-400 hover:text-indigo-300 font-medium">Live Demo</a>
+                            <a href="#" class="text-indigo-400 hover:text-indigo-300 font-medium">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-24 p-8 md:p-16">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-title animate-on-scroll fade-in-up">Skills</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 text-center">
+
+                <div class="skill-icon flex flex-col items-center space-y-3 p-6 rounded-2xl bg-slate-800 bg-opacity-50 border border-slate-700 animate-on-scroll fade-in-up stagger-1">
+                    <div class="w-16 h-16 flex items-center justify-center rounded-xl bg-slate-700">
+                        <svg class="w-10 h-10 text-orange-500 skill-icon-svg transition-all duration-300" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M1.334 0h21.332L21.334 21.6l-9.334 2.4-9.334-2.4L1.334 0zM12 19.95V3.6h8.05l-1.6 16.35L12 19.95z"/></svg>
+                    </div>
+                    <span class="text-sm font-medium text-gray-300 skill-icon-name transition-colors duration-300">HTML</span>
+                </div>
+
+                <div class="skill-icon flex flex-col items-center space-y-3 p-6 rounded-2xl bg-slate-800 bg-opacity-50 border border-slate-700 animate-on-scroll fade-in-up stagger-2">
+                    <div class="w-16 h-16 flex items-center justify-center rounded-xl bg-slate-700">
+                        <svg class="w-10 h-10 text-blue-500 skill-icon-svg transition-all duration-300" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M1.333 0h21.334l-1.933 21.6-9.4 2.4-9.4-2.4L1.333 0zM12 19.95l6.467-1.8 1.4-14.55H12V3.6H4.067l.733 8.2h7.2v-2.6H6.667l-.4-4.2h10.2l-.6 6.8H9.467l-.4 4.85L12 19.95z"/></svg>
+                    </div>
+                    <span class="text-sm font-medium text-gray-300 skill-icon-name transition-colors duration-300">CSS</span>
+                </div>
+
+                <div class="skill-icon flex flex-col items-center space-y-3 p-6 rounded-2xl bg-slate-800 bg-opacity-50 border border-slate-700 animate-on-scroll fade-in-up stagger-3">
+                    <div class="w-16 h-16 flex items-center justify-center rounded-xl bg-slate-700">
+                        <svg class="w-9 h-9 text-yellow-400 skill-icon-svg transition-all duration-300" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M0 0h24v24H0V0zm22.034 18.262H17.92v2.128h-2.138v-2.128h-1.57c-2.31-1.215-2.588-3.325-1.524-4.717l2.92-3.793c.87-1.139.512-2.118-.62-2.118h-2.186v-2.11h2.185a3.68 3.68 0 0 1 3.55 2.582c1.39 2.528.17 4.93-1.635 6.474h2.128v2.128zm-9.98-1.583h-2.12V3.619h2.12v13.06z"/></svg>
+                    </div>
+                    <span class="text-sm font-medium text-gray-300 skill-icon-name transition-colors duration-300">JavaScript</span>
+                </div>
+
+                <div class="skill-icon flex flex-col items-center space-y-3 p-6 rounded-2xl bg-slate-800 bg-opacity-50 border border-slate-700 animate-on-scroll fade-in-up stagger-4">
+                    <div class="w-16 h-16 flex items-center justify-center rounded-xl bg-slate-700">
+                        <svg class="w-9 h-9 text-blue-400 skill-icon-svg transition-all duration-300" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M11.954 14.239c-1.33-1.25-1.33-3.21-.04-4.42.04-.04.04-.08.04-.12a2.32 2.32 0 0 0-2.3-2.31c-1.33 0-2.31 1.02-2.31 2.31a2.32 2.32 0 0 0 2.31 2.31c0 .04.04.04.04.08a4.52 4.52 0 0 1-4.48 4.49c-2.47 0-4.48-2.01-4.48-4.49S5.184 7.6 7.654 7.6h.4v-3H7.654C3.424 4.6 0 7.98 0 12.21s3.42 7.61 7.65 7.61h.01c.18 0 .35-.01.52-.03a4.52 4.52 0 0 1 3.77-2.55zm.08-9.63a2.32 2.32 0 0 0 2.31-2.3c0-1.3-1.02-2.31-2.31-2.31-1.33 0-2.31 1.02-2.31 2.31 0 1.29 1.02 2.3 2.31 2.3zm-3.8 14.82a4.52 4.52 0 0 1 3.77-2.55c.04 0 .04-.04.04-.04a2.32 2.32 0 0 0 2.31-2.31c0-1.3-1.02-2.31-2.31-2.31a2.32 2.32 0 0 0-2.31 2.31c0 .04-.04.04-.04.08a4.52 4.52 0 0 1-4.48-4.48c0-2.48 2.01-4.49 4.48-4.49h.4v3h-.4c-2.47 0-4.48 2.01-4.48 4.49s2.01 4.49 4.48 4.49h.01c.18 0 .35-.01.52-.03a4.52 4.52 0 0 1 3.77-2.55c1.33 1.25 1.33 3.21.04 4.42-.04.04-.04.08-.04.12a2.32 2.32 0 0 0 2.3 2.31c1.33 0 2.31-1.02 2.31-2.31a2.32 2.32 0 0 0-2.31-2.31c0-.04-.04-.04-.04-.08a4.52 4.52 0 0 1 4.48-4.49c2.47 0 4.48 2.01 4.48 4.49s-2.01 4.49-4.48 4.49h-.4v3h.4c4.23 0 7.65-3.38 7.65-7.61S20.454 4.6 16.224 4.6h-.01c-.18 0-.35.01-.52.03a4.52 4.52 0 0 1-3.77 2.55zm.04 2.3a2.32 2.32 0 0 0-2.31 2.31c0 1.3 1.02 2.31 2.31 2.31s2.31-1.02 2.31-2.31c0-1.3-1.02-2.31-2.31-2.31z"/></svg>
+                    </div>
+                    <span class="text-sm font-medium text-gray-300 skill-icon-name transition-colors duration-300">Python</span>
+                </div>
+
+                <div class="skill-icon flex flex-col items-center space-y-3 p-6 rounded-2xl bg-slate-800 bg-opacity-50 border border-slate-700 animate-on-scroll fade-in-up stagger-5">
+                    <div class="w-16 h-16 flex items-center justify-center rounded-xl bg-slate-700">
+                        <svg class="w-9 h-9 text-red-500 skill-icon-svg transition-all duration-300" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M12.332.352c-1.168.02-2.45.18-3.35.538-.97.38-1.74.93-2.33 1.638-.98 1.15-.99 2.82-.41 4.45C7.142 9.58 8.982 12.18 9.042 15.22c.04 2.1-1.22 3.92-2.44 5.32-1.12 1.28-2.28 2.72-2.02 4.1.34 1.8 2.55 2.51 4.82 1.45 2.3-1.05 3.32-3.15 4.1-5.75.5-1.68.6-3.38.6-5.07-.01-2.7-1.32-5.3-2.26-7.35-.93-2.02-1.32-4.13.1-5.26.24-.18.6-.32 1.02-.42.8-.2 1.8-.18 2.54-.18.78 0 1.8-.02 2.62.18.42.1.8.24 1.02.42.42.32.72.72.84 1.15.18.6.08 1.35-.2 2-.28.65-.78 1.12-1.22 1.52-2.12 1.95-3.9 4.38-3.92 7.82-.02 2.22 1.13 4.2 2.3 5.55 1.05 1.22 2.32 2.5 2.05 3.82-.35 1.7-2.62 2.4-4.85 1.3-2.3-1.12-3.25-3.2-4.02-5.78-.48-1.65-.58-3.35-.58-5.05 0-2.25 1.34-4.7 2.18-6.55.85-1.85 1.3-4.18-.02-5.28a3.1 3.1 0 0 0-1.1-.9c-.83-.35-2.08-.5-3.28-.5z"/></svg>
+                    </div>
+                    <span class="text-sm font-medium text-gray-300 skill-icon-name transition-colors duration-300">Java</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-24 p-8 md:p-16 flex items-center">
+        <div class="container mx-auto max-w-4xl text-center">
+            <h2 class="section-title animate-on-scroll fade-in-up">Let's Connect</h2>
+            <div class="card p-12 space-y-8 animate-on-scroll fade-in-up stagger-1">
+                <p class="text-xl md:text-2xl leading-relaxed text-gray-300">Ready to bring your ideas to life? Let's collaborate and create something amazing together.</p>
+                <div class="space-y-6">
+                    <a href="mailto:your.email@example.com" class="btn-primary inline-block text-lg">Send an Email</a>
+                    <div class="flex justify-center gap-8 pt-6 text-3xl">
+                        <a href="#" aria-label="LinkedIn" class="text-gray-400 hover:text-indigo-500 transition-all duration-300 transform hover:scale-110">
+                            <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.23 0H1.77C.79 0 0 .79 0 1.77v20.46c0 .98.79 1.77 1.77 1.77h20.46c.98 0 1.77-.79 1.77-1.77V1.77c0-.98-.79-1.77-1.77-1.77zM6.6 20.24H3.27V9.75h3.33v10.49zM4.93 8.3c-1.16 0-2.1-.94-2.1-2.1s.94-2.1 2.1-2.1 2.1.94 2.1 2.1-.94 2.1-2.1 2.1zM20.24 20.24h-3.33v-5.26c0-1.25-.03-2.85-1.74-2.85-1.74 0-2 1.35-2 2.76v5.35h-3.33V9.75h3.19v1.46h.05c.44-.84 1.54-1.72 3.16-1.72 3.39 0 4.02 2.23 4.02 5.12v5.63z"/></svg>
+                        </a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="p-8 text-center text-gray-500 text-sm border-t border-slate-800">
+        <p>&copy; <span id="current-year"></span> Aarush Samant
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- DOM Element Caching ---
+        const loadingScreen = document.getElementById('loading');
+        const cursor = document.getElementById('cursor');
+        const particlesContainer = document.querySelector('.particles');
+        const typewriterEl = document.getElementById('typewriter');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+        const currentYearEl = document.getElementById('current-year');
+        const stickyNav = document.getElementById('sticky-nav');
+        const heroSection = document.getElementById('home');
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        const cards = document.querySelectorAll('.card, .project-card'); // Include new project cards
+        const interactiveElements = document.querySelectorAll('a, button, .card, .skill-icon, .project-card'); // Include new project cards
+
+        // --- Initial Setup ---
+        currentYearEl.textContent = new Date().getFullYear();
+
+        // --- Loading Screen ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                loadingScreen.addEventListener('transitionend', () => loadingScreen.style.display = 'none');
+            }, 500);
+        });
+
+        // --- Custom Cursor ---
+        let cursorX = 0, cursorY = 0;
+        let isCursorActive = false;
+
+        function updateCursor() {
+            if (isCursorActive) {
+                cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+            }
+            requestAnimationFrame(updateCursor);
+        }
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isCursorActive) {
+                isCursorActive = true;
+                requestAnimationFrame(updateCursor);
+            }
+            cursorX = e.clientX;
+            cursorY = e.clientY;
+        });
+
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) scale(1.5)`);
+            el.addEventListener('mouseleave', () => cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) scale(1)`);
+        });
+
+        // --- Particle Generation ---
+        function createParticles() {
+            if (!particlesContainer) return;
+            const particleCount = 20;
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                const size = `${Math.random() * 4 + 2}px`;
+                particle.style.width = size;
+                particle.style.height = size;
+                particle.style.animationDelay = `${Math.random() * 6}s`;
+                particle.style.animationDuration = `${Math.random() * 4 + 6}s`;
+                fragment.appendChild(particle);
+            }
+            particlesContainer.appendChild(fragment);
+        }
+        createParticles();
+
+        // --- Typewriter Effect ---
+        function typewriterEffect() {
+            if (!typewriterEl) return;
+            const texts = ['Full-Stack Developer', 'UI/UX Enthusiast', 'Problem Solver', 'Creative Coder'];
+            let textIndex = 0, charIndex = 0, isDeleting = false;
+
+            function type() {
+                const currentText = texts[textIndex];
+                let typeSpeed = isDeleting ? 50 : 100;
+
+                if (isDeleting) {
+                    charIndex--;
+                } else {
+                    charIndex++;
+                }
+                typewriterEl.textContent = currentText.substring(0, charIndex);
+
+                if (!isDeleting && charIndex === currentText.length) {
+                    typeSpeed = 2000;
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % texts.length;
+                    typeSpeed = 500;
+                }
+                setTimeout(type, typeSpeed);
+            }
+            setTimeout(type, 1500);
+        }
+        typewriterEffect();
+
+        // --- Scroll-based Animations & Updates ---
+        let isTicking = false;
+
+        function handleScroll() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            
+            // Scroll Indicator
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            scrollIndicator.style.width = `${scrollPercent}%`;
+
+            // Sticky Nav
+            const heroHeight = heroSection.offsetHeight;
+            stickyNav.classList.toggle('visible', window.scrollY > heroHeight - 100);
+            
+            isTicking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!isTicking) {
+                window.requestAnimationFrame(handleScroll);
+                isTicking = true;
+            }
+        });
+
+        // --- Intersection Observer for Animations ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        animatedElements.forEach(el => observer.observe(el));
+
+        // --- Interactive Card Tilt Effect ---
+        const tiltCards = document.querySelectorAll('.card'); // Only apply tilt to original cards
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+    });
+    </script>
+</body>
+</html>
